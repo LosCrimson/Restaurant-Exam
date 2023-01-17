@@ -8,5 +8,6 @@ namespace Restaurant.Models
 {
     public class Order
     {
+        private int _id;
     }
 }
