@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Models
 {
-    public class Menu
+    public class MenuItem
     {
         private int _id;
         private string _item;
@@ -9,7 +9,7 @@
         public string Item { get { return _item; } set { _item = value; } }
         public double Price { get { return _price; } set { _price = value; } }
 
-        public Menu(int id, string item, double price) 
+        public MenuItem(int id, string item, double price) 
         {
             _id = id;
             _item = item;
