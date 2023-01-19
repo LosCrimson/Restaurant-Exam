@@ -15,5 +15,14 @@
             _item = item;
             _price = price;
         }
+
+        public MenuItem(string rowData)
+        {
+            string[] data = rowData.Split(',');
+
+            _id = Convert.ToInt16(data[0]);
+            _item = data[1];
+            _price = Convert.ToDouble(data[2]);
+        }
     }
 }

@@ -1,10 +1,21 @@
-﻿namespace Restaurant
+﻿using CsvHelper;
+using Restaurant.Models;
+using Restaurant.Services;
+using System.Globalization;
+using Restaurant.Repos;
+
+namespace Restaurant
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            MenuService ser = new MenuService();
+            ser.PopulateMenu();
+            Menu.menu.ForEach(p => Console.WriteLine($"{p.Id} {p.Item} {p.Price}eu"));
+            Console.ReadLine();
+
+
         }
     }
 }

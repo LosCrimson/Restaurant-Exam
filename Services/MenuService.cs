@@ -1,17 +1,36 @@
-﻿using Restaurant.Models;
+﻿using CsvHelper.Configuration;
+using CsvHelper;
+using Restaurant.Models;
+using System.Globalization;
+using System;
+using Restaurant.Repos;
 
 namespace Restaurant.Services
 {
     public class MenuService
     {
-        public List<MenuItem> ReadCsvFile()
+        public void ReadCsvFile(string filePath)
         {
-            using (var foodReader = new StreamReader("Food.csv"))
-            using (var drinkReader = new StreamReader("Drinks.csv"))
-                while(!foodReader.EndOfStream || !drinkReader.EndOfStream)
+            string[] csvLines = File.ReadAllLines(filePath);
+
+            for (int i = 1; i < csvLines.Length; i++) 
             {
-                
+                MenuItem item = new MenuItem(csvLines[i]);
+                Menu.menu.Add(item);
             }
+        }
+
+        public void PopulateMenu()
+        {
+            ReadCsvFile("./Food.csv");
+            ReadCsvFile("./Drinks.csv");
+            SortMenuId();
+        }
+
+        public void SortMenuId() 
+        {
+            int i = 1;
+            Menu.menu.ForEach(p => p.Id = i++);
         }
     }
 }
