@@ -15,7 +15,10 @@ namespace Restaurant
             Menu.menu.ForEach(p => Console.WriteLine($"{p.Id} {p.Item} {p.Price}eu"));
             Console.ReadLine();
 
-
+            var uiService = new UiService();
+            var orderService = new OrderService(uiService);
+            orderService.MainMenu();
+            Console.ReadLine();
         }
     }
 }

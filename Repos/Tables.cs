@@ -4,7 +4,7 @@ namespace Restaurant.Repos
 {
     public class Tables : Repositories<Tables>
     {
-        public List<Table> tables = new List<Table>
+        public static List<Table> tables = new List<Table>
         {
             new Table(1, 1, false),
             new Table(2, 1, false),

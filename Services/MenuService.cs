@@ -4,10 +4,11 @@ using Restaurant.Models;
 using System.Globalization;
 using System;
 using Restaurant.Repos;
+using Restaurant.Interfaces;
 
 namespace Restaurant.Services
 {
-    public class MenuService
+    public class MenuService : IMenuService
     {
         public void ReadCsvFile(string filePath)
         {
