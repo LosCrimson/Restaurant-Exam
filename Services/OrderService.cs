@@ -1,11 +1,7 @@
 ﻿using Restaurant.Enum;
 using Restaurant.Interfaces;
 using Restaurant.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Restaurant.Repos;
 
 namespace Restaurant.Services
 {
@@ -14,9 +10,11 @@ namespace Restaurant.Services
 
         private UiService _uiService;
 
+
         public OrderService(UiService uiService)
         { 
             _uiService = uiService; 
+
         }
         public void MainMenu() 
         {
@@ -31,7 +29,7 @@ namespace Restaurant.Services
 
                         break;
                     case ActionTypes.TABLES:
-
+                        ChangingTableOcupancy();
                         break;
                     case ActionTypes.EMAIL:
 
@@ -63,5 +61,31 @@ namespace Restaurant.Services
                 Console.WriteLine("Selected table already occupied.");
             }
         }
+
+       public void ChangingTableOcupancy()
+        {
+            _uiService.PrintingTableList();
+            Console.WriteLine("");
+            Console.WriteLine("To make table unoccupied please type in table number.");
+            Console.WriteLine("Otherwise press Enter.");
+            try
+            {
+                int tableId = Convert.ToInt32(Console.ReadLine());
+                try
+                {
+                    Tables.tables.Single(t => t.Id == tableId).Occupied = false;
+                    Console.WriteLine($"Table {tableId} is free now.");
+                } 
+                catch(InvalidOperationException) 
+                {
+                    Console.WriteLine($"This table {tableId} does not exist please try again");
+                }
+            }
+               catch(FormatException) 
+            { }
+            Console.WriteLine("");
+        }
+
+
     }
 }

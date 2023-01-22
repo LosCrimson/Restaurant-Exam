@@ -1,12 +1,7 @@
 ﻿using Restaurant.Enum;
 using Restaurant.Interfaces;
-using Restaurant.Repos;
 using Restaurant.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Restaurant.Repos;
 
 namespace Restaurant.Services
 {
@@ -58,7 +53,7 @@ namespace Restaurant.Services
 
         public void PrintingTableList()
         {
-            Tables.tables.ForEach(t => Console.WriteLine($"Table number: {t.Id}, seating capacity: {t.SeatingCapacity}, occupied: {t.Occupied}"));
+            Tables.tables.ForEach(t => Console.WriteLine($"Table number: {t.Id} | seating capacity: {t.SeatingCapacity} | occupied: {t.Occupied}"));
         }
 
         public Table PickingTable()

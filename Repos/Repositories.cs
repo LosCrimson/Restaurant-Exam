@@ -18,7 +18,7 @@
             return default(T);
         }
 
-        public List<T> RetrieveAll(int id, List<T> list)
+        public List<T> RetrieveAllFiltered(int id, List<T> list)
         {
             List<T> filteredList = new List<T>();
 
