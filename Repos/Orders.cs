@@ -2,7 +2,7 @@
 
 namespace Restaurant.Repos
 {
-    public class Orders : Repositories<Orders>
+    public class Orders : Repositories<Order>
     {
         public List<Order> orders = new List<Order>();
     }

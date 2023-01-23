@@ -2,6 +2,7 @@
 using Restaurant.Interfaces;
 using Restaurant.Models;
 using Restaurant.Repos;
+using System.Data;
 
 namespace Restaurant.Services
 {
@@ -64,7 +65,45 @@ namespace Restaurant.Services
             return selectedTable;
         }
 
+        public int OrderingMenuItems()
+        {
+            Console.WriteLine("Please write items id");
+            int clientOrder = Convert.ToInt32(Console.ReadLine());
+            return clientOrder;
+        }
+        public void PrintMenu()
+        {
+            Menu.menu.ForEach(item => Console.WriteLine($"Id: {item.Id} | Name: {item.Item} {item.Price}eu"));
+        }
 
+        public bool AreClientsSeated()
+        {
+            Console.WriteLine("Are clients seated? [Y]YES [N]NO");
+            string answer = Console.ReadLine();
+            if(answer.Equals("Y")) 
+            { return true; }
+            else 
+            { return false; }
+        }
+
+        public int TableSelectionForWaiter()
+        {
+            Console.WriteLine("At which table are the clients seated?");
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        public void PrintOrder(Order order)
+        { 
+            Console.WriteLine("CHECK");
+            Console.WriteLine($"Check id: {order.Id}");
+            Console.WriteLine($"Table : {order.Table}");
+            foreach(var item in order.Menu)
+            {
+                Console.WriteLine($"Id: {item.Id} | Name: {item.Item} {item.Price}eu");
+            }
+            Console.WriteLine($"Total price: {order.Sum}");
+            Console.WriteLine($"Date: {order.Date}");
+        }
 
     }
 }

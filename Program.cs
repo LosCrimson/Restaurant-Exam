@@ -16,7 +16,9 @@ namespace Restaurant
             Console.ReadLine();
 
             var uiService = new UiService();
-            var orderService = new OrderService(uiService);
+            var orders = new Orders();
+            var listService = new ListService();
+            var orderService = new OrderService(uiService, orders, listService);
             orderService.MainMenu();
             Console.ReadLine();
         }

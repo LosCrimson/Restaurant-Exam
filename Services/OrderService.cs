@@ -9,12 +9,14 @@ namespace Restaurant.Services
     {
 
         private UiService _uiService;
+        private Orders _orders;
+        private ListService _listService;
 
-
-        public OrderService(UiService uiService)
+        public OrderService(UiService uiService, Orders orders, ListService listService)
         { 
             _uiService = uiService; 
-
+            _orders = orders;
+            _listService = listService;
         }
         public void MainMenu() 
         {
@@ -26,7 +28,7 @@ namespace Restaurant.Services
                         SeatClients();
                         break;
                     case ActionTypes.ORDER:
-
+                        RegisterClientOrder();
                         break;
                     case ActionTypes.TABLES:
                         ChangingTableOcupancy();
@@ -86,6 +88,41 @@ namespace Restaurant.Services
             Console.WriteLine("");
         }
 
+        public void RegisterClientOrder()
+        {
+            if(!_uiService.AreClientsSeated())
+            {
+                SeatClients();
+            }
+            _uiService.PrintMenu();
+            Console.WriteLine("What would you like to order?");
+            Console.WriteLine("When done press ENTER");
+            List<int> idList = new List<int>();
+            try 
+            {
+                while(true) 
+                {
+                    int itemID = _uiService.OrderingMenuItems();
+                    if (itemID > Menu.menu.Count)
+                    {
+                        Console.WriteLine("There no item like this in the Menu. Try again.");
+                    }
+                    else
+                    { idList.Add(itemID); }
+                }
+            }
+            catch(FormatException) 
+            {
+                List<MenuItem> clientItemList = _listService.FindingMenuItemsViaID(idList);
+                int tableId = _uiService.TableSelectionForWaiter();
+                int orderId = _orders.orders.Count + 1;
+                _orders.orders.Add(new Order(orderId, tableId, clientItemList, _listService.SumOfMenuItems(clientItemList), DateTime.Now));
+                _uiService.PrintOrder(_orders.Retrieve(orderId, _orders.orders));
+            }
+        }
 
+
+
+        
     }
 }
