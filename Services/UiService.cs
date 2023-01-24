@@ -101,7 +101,7 @@ namespace Restaurant.Services
             {
                 Console.WriteLine($"Id: {item.Id} | Name: {item.Item} {item.Price}eu");
             }
-            Console.WriteLine($"Total price: {order.Sum}");
+            Console.WriteLine($"Total price: {order.Sum}eu");
             Console.WriteLine($"Date: {order.Date}");
         }
 

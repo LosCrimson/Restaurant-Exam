@@ -118,10 +118,33 @@ namespace Restaurant.Services
                 int orderId = _orders.orders.Count + 1;
                 _orders.orders.Add(new Order(orderId, tableId, clientItemList, _listService.SumOfMenuItems(clientItemList), DateTime.Now));
                 _uiService.PrintOrder(_orders.Retrieve(orderId, _orders.orders));
+                PrintOrderToFile(orderId);
             }
         }
 
+        public async Task PrintOrderToFile(int orderId)
+        {
+            Order order = _orders.Retrieve(orderId, _orders.orders);
 
+            List<string> stringMenuItemList = new List<string>();
+            foreach (var item in order.Menu)
+            {
+               stringMenuItemList.Add($"Id: {item.Id} | Name: {item.Item} {item.Price}eu");
+            }
+            string menuItems = String.Join("|", stringMenuItemList.ToArray());
+
+            string[] Check =
+            {
+                $"CHECK",
+                $"Check id: {order.Id}",
+                $"Table : {order.Table}",
+                menuItems,
+                $"Total price: {order.Sum}eu",
+                $"Date: {order.Date}",
+             };
+
+            await File.WriteAllLinesAsync($"Check_{Guid.NewGuid()}.txt" ,Check);
+        }
 
         
     }
