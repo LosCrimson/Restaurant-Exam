@@ -105,5 +105,17 @@ namespace Restaurant.Services
             Console.WriteLine($"Date: {order.Date}");
         }
 
+        public int SelectingCheckIdForEmail()
+        {
+            Console.WriteLine("Which Check would you like to send?");
+            Console.WriteLine("Please write Id");
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        public string SelectingCheckEmail() 
+        {
+            Console.WriteLine("PLease fill in email: ");
+            return Console.ReadLine();
+        }
     }
 }

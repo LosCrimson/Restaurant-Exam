@@ -2,6 +2,13 @@
 using Restaurant.Interfaces;
 using Restaurant.Models;
 using Restaurant.Repos;
+using System.Net;
+using FluentEmail.Smtp;
+using MimeKit;
+using MimeKit.Text;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MailKit.Search;
 
 namespace Restaurant.Services
 {
@@ -11,12 +18,14 @@ namespace Restaurant.Services
         private UiService _uiService;
         private Orders _orders;
         private ListService _listService;
+        private EmailService _emailService;
 
-        public OrderService(UiService uiService, Orders orders, ListService listService)
+        public OrderService(UiService uiService, Orders orders, ListService listService, EmailService emailService)
         { 
             _uiService = uiService; 
             _orders = orders;
             _listService = listService;
+            _emailService = emailService;
         }
         public void MainMenu() 
         {
@@ -34,7 +43,7 @@ namespace Restaurant.Services
                         ChangingTableOcupancy();
                         break;
                     case ActionTypes.EMAIL:
-
+                        SendCheckViaEmail();
                         break;
                     case ActionTypes.EXIT:
                         return;
@@ -125,27 +134,14 @@ namespace Restaurant.Services
         public async Task PrintOrderToFile(int orderId)
         {
             Order order = _orders.Retrieve(orderId, _orders.orders);
-
-            List<string> stringMenuItemList = new List<string>();
-            foreach (var item in order.Menu)
-            {
-               stringMenuItemList.Add($"Id: {item.Id} | Name: {item.Item} {item.Price}eu");
-            }
-            string menuItems = String.Join("|", stringMenuItemList.ToArray());
-
-            string[] Check =
-            {
-                $"CHECK",
-                $"Check id: {order.Id}",
-                $"Table : {order.Table}",
-                menuItems,
-                $"Total price: {order.Sum}eu",
-                $"Date: {order.Date}",
-             };
-
-            await File.WriteAllLinesAsync($"Check_{Guid.NewGuid()}.txt" ,Check);
+            await File.WriteAllLinesAsync($"Check_{Guid.NewGuid()}.txt" , _listService.ConverOrderToString(order));
         }
 
+        public void SendCheckViaEmail()
+        {
+            Order order = _orders.Retrieve(_uiService.SelectingCheckIdForEmail(), _orders.orders);
+            _emailService.SendEmail(String.Concat(_listService.ConverOrderToString(order)), _uiService.SelectingCheckEmail());
+        }
         
     }
 }
