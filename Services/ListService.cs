@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MailKit.Search;
+using Restaurant.Interfaces;
 using Restaurant.Models;
 using Restaurant.Repos;
 
 namespace Restaurant.Services
 {
-    public class ListService
+    public class ListService : IListService
     {
-        public List<MenuItem> FindingMenuItemsViaID(List<int> idList)
+        public List<MenuItem> FindingMenuItemsViaID(List<int> idList, List<MenuItem> menuList)
         {
             List<MenuItem> clientItemList = new List<MenuItem>();
             foreach(var id in idList)
             {
-                foreach(var menuItem in Menu.menu)
+                foreach(var menuItem in menuList)
                 {
                     if(id == menuItem.Id)
                     {

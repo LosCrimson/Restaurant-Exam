@@ -19,17 +19,28 @@ namespace Restaurant.Services
         private Orders _orders;
         private ListService _listService;
         private EmailService _emailService;
+        private Menu _menu;
+        private Tables _tables;
+        private MenuService _menuService;
 
-        public OrderService(UiService uiService, Orders orders, ListService listService, EmailService emailService)
+        public OrderService(UiService uiService, Orders orders, ListService listService, EmailService emailService, Menu menu, Tables tables, MenuService menuService)
         { 
             _uiService = uiService; 
             _orders = orders;
             _listService = listService;
             _emailService = emailService;
+            _menu = menu;
+            _tables = tables;
+            _menuService = menuService;
         }
         public void MainMenu() 
         {
-            while(true) 
+
+            _menuService.ReadCsvFile("./Food.csv", _menu.menu);
+            _menuService.ReadCsvFile("./Drinks.csv", _menu.menu);
+            _menuService.SortMenuId(_menu.menu);
+
+            while (true) 
             {
                 switch(_uiService.GetActionType())
                 {
@@ -54,8 +65,8 @@ namespace Restaurant.Services
         public void SeatClients()
         {
             int numberOfCustomers = _uiService.SelectingNumberOfClientsToSeat();
-            _uiService.PrintingTableList();
-            Table selectedTable = _uiService.PickingTable();
+            _uiService.PrintingTableList(_tables.tables);
+            Table selectedTable = _uiService.PickingTable(_tables.tables);
             if (selectedTable.Occupied == false)
             {
                 if (numberOfCustomers <= selectedTable.SeatingCapacity)
@@ -75,7 +86,7 @@ namespace Restaurant.Services
 
        public void ChangingTableOcupancy()
         {
-            _uiService.PrintingTableList();
+            _uiService.PrintingTableList(_tables.tables);
             Console.WriteLine("");
             Console.WriteLine("To make table unoccupied please type in table number.");
             Console.WriteLine("Otherwise press Enter.");
@@ -84,7 +95,7 @@ namespace Restaurant.Services
                 int tableId = Convert.ToInt32(Console.ReadLine());
                 try
                 {
-                    Tables.tables.Single(t => t.Id == tableId).Occupied = false;
+                    _tables.tables.Single(t => t.Id == tableId).Occupied = false;
                     Console.WriteLine($"Table {tableId} is free now.");
                 } 
                 catch(InvalidOperationException) 
@@ -103,7 +114,7 @@ namespace Restaurant.Services
             {
                 SeatClients();
             }
-            _uiService.PrintMenu();
+            _uiService.PrintMenu(_menu.menu);
             Console.WriteLine("What would you like to order?");
             Console.WriteLine("When done press ENTER");
             List<int> idList = new List<int>();
@@ -112,7 +123,7 @@ namespace Restaurant.Services
                 while(true) 
                 {
                     int itemID = _uiService.OrderingMenuItems();
-                    if (itemID > Menu.menu.Count)
+                    if (itemID > _menu.menu.Count)
                     {
                         Console.WriteLine("There no item like this in the Menu. Try again.");
                     }
@@ -122,7 +133,7 @@ namespace Restaurant.Services
             }
             catch(FormatException) 
             {
-                List<MenuItem> clientItemList = _listService.FindingMenuItemsViaID(idList);
+                List<MenuItem> clientItemList = _listService.FindingMenuItemsViaID(idList, _menu.menu);
                 int tableId = _uiService.TableSelectionForWaiter();
                 int orderId = _orders.orders.Count + 1;
                 _orders.orders.Add(new Order(orderId, tableId, clientItemList, _listService.SumOfMenuItems(clientItemList), DateTime.Now));

@@ -52,16 +52,16 @@ namespace Restaurant.Services
             return numberOfCustomers;
         }
 
-        public void PrintingTableList()
+        public void PrintingTableList(List<Table> tables)
         {
-            Tables.tables.ForEach(t => Console.WriteLine($"Table number: {t.Id} | seating capacity: {t.SeatingCapacity} | occupied: {t.Occupied}"));
+            tables.ForEach(t => Console.WriteLine($"Table number: {t.Id} | seating capacity: {t.SeatingCapacity} | occupied: {t.Occupied}"));
         }
 
-        public Table PickingTable()
+        public Table PickingTable(List<Table> tables)
         {
             Console.WriteLine("Please pick a table.");
             int tableNumber = Convert.ToInt32(Console.ReadLine());
-            Table selectedTable = Tables.tables.Single(t => t.Id == tableNumber);
+            Table selectedTable = tables.Single(t => t.Id == tableNumber);
             return selectedTable;
         }
 
@@ -71,9 +71,9 @@ namespace Restaurant.Services
             int clientOrder = Convert.ToInt32(Console.ReadLine());
             return clientOrder;
         }
-        public void PrintMenu()
+        public void PrintMenu(List<MenuItem> menu)
         {
-            Menu.menu.ForEach(item => Console.WriteLine($"Id: {item.Id} | Name: {item.Item} {item.Price}eu"));
+            menu.ForEach(item => Console.WriteLine($"Id: {item.Id} | Name: {item.Item} {item.Price}eu"));
         }
 
         public bool AreClientsSeated()

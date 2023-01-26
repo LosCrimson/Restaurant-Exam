@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restaurant.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,7 @@ namespace Restaurant.Interfaces
 {
     public interface IMenuService
     {
-        void ReadCsvFile(string filePath);
-        void PopulateMenu();
-        void SortMenuId();
+        void ReadCsvFile(string filePath, List<MenuItem> menu);
+        void SortMenuId(List<MenuItem> menu);
     }
 }

@@ -10,16 +10,14 @@ namespace Restaurant
     {
         static void Main(string[] args)
         {
-            MenuService ser = new MenuService();
-            ser.PopulateMenu();
-            Menu.menu.ForEach(p => Console.WriteLine($"{p.Id} {p.Item} {p.Price}eu"));
-            Console.ReadLine();
-
             var uiService = new UiService();
             var orders = new Orders();
             var listService = new ListService();
             var emailService = new EmailService();
-            var orderService = new OrderService(uiService, orders, listService, emailService);
+            var menu = new Menu();
+            var tables = new Tables();
+            var menuService = new MenuService();
+            var orderService = new OrderService(uiService, orders, listService, emailService, menu, tables, menuService);
             orderService.MainMenu();
             Console.ReadLine();
         }

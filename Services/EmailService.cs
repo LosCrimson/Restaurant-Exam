@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using Restaurant.Interfaces;
 
 namespace Restaurant.Services
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         public void SendEmail(string emailBody, string emailTo)
         {

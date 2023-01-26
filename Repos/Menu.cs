@@ -4,6 +4,6 @@ namespace Restaurant.Repos
 {
     public class Menu : Repositories<Menu>
     {
-        public static List<MenuItem> menu = new List<MenuItem>();
+        public List<MenuItem> menu = new List<MenuItem>();
     }
 }
